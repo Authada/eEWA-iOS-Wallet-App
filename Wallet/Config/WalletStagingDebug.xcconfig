@@ -1,0 +1,10 @@
+BUILD_TYPE = DEBUG
+WALLET_HOST_URL = https:/$()/id.staging.authada.de/eudi/wallet
+WALLET_ATT_CLIENT_ID = wallet-dev
+VERIFIER_API_URI = https:/$()/dev.verifier.eudiw.dev
+VERIFIER_LEGAL_NAME = EUDI Verifier
+VCI_ISSUER_URL = https:/$()/id.staging.authada.de/eudi/issuer/pid
+VCI_CLIENT_ID = wallet-dev
+VCI_REDIRECT_URI = eudi-openid4ci:/$()/authorize
+CORE_USER_AUTH = false
+WALLET_RP_WEBDEMO_URL = https:/$()/id.staging.authada.de/eudi/verifier/

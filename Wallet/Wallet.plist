@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Build Type</key>
+	<string>$(BUILD_TYPE)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>eudi-openid4vp</string>
+				<string>mdoc-openid4vp</string>
+				<string>openid4vp</string>
+				<string>openid-credential-offer</string>
+				<string>eudi-openid4ci</string>
+			</array>
+		</dict>
+	</array>
+	<key>Core User Auth</key>
+	<string>$(CORE_USER_AUTH)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>eid</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>Vci Client Id</key>
+	<string>$(VCI_CLIENT_ID)</string>
+	<key>Vci Issuer URL</key>
+	<string>$(VCI_ISSUER_URL)</string>
+	<key>Vci Redirect Uri</key>
+	<string>$(VCI_REDIRECT_URI)</string>
+	<key>Verifier API</key>
+	<string>$(VERIFIER_API_URI)</string>
+	<key>Verifier Legal Name</key>
+	<string>$(VERIFIER_LEGAL_NAME)</string>
+	<key>Wallet Att Client Id</key>
+	<string>$(WALLET_ATT_CLIENT_ID)</string>
+	<key>Wallet Host URL</key>
+	<string>$(WALLET_HOST_URL)</string>
+	<key>Wallet RP Webdemo URL</key>
+	<string>$(WALLET_RP_WEBDEMO_URL)</string>
+</dict>
+</plist>

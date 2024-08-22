@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="181.731" height="188.105" viewBox="0 0 181.731 188.105">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rechteck_1546" data-name="Rechteck 1546" width="134.115" height="151.692" fill="none" stroke="#e4e4e4" stroke-width="6"/>
+    </clipPath>
+  </defs>
+  <g id="DM_grafic_identify_info" transform="translate(-97.51 -168.895)">
+    <g id="grafic_id">
+      <g id="Illustration" transform="translate(98 177)">
+        <g id="illustration-2" data-name="illustration">
+          <circle id="Ellipse_243" data-name="Ellipse 243" cx="90" cy="90" r="90" fill="#2f2f2f"/>
+        </g>
+      </g>
+      <g id="icon_ident" transform="translate(-134.49 -194.447)">
+        <g id="Gruppe_708" data-name="Gruppe 708" transform="translate(277.864 387.447)">
+          <g id="Gruppe_707" data-name="Gruppe 707" transform="translate(0 0)">
+            <g id="Gruppe_706" data-name="Gruppe 706" clip-path="url(#clip-path)">
+              <path id="Pfad_3434" data-name="Pfad 3434" d="M39.438,58.314A2.992,2.992,0,0,1,37.2,57.307L19.446,37.34A22.31,22.31,0,0,0,2.783,29.857H1.5a3,3,0,0,1,0-6H2.783a28.314,28.314,0,0,1,21.147,9.5L41.679,53.321a3,3,0,0,1-2.241,4.993Z" transform="translate(90.828 42.07)" fill="#e4e4e4"/>
+              <path id="Pfad_3435" data-name="Pfad 3435" d="M81.492,91.211a3.035,3.035,0,0,1-.313-.016L46.4,87.6a3,3,0,0,1-1.249-.42L19.855,71.806c-.123-.079-5.32-3.592-12.966-9.719C-2.7,54.416-2.991,45.342.8,40.159s12.386-7.778,22.277-1.187c4.329,2.885,8.776,5.942,12.787,8.7,3.962,2.723,7.49,5.151,10.034,6.811.433-.772.907-1.655,1.3-2.426A3,3,0,0,1,52.54,54.79c-3,5.859-3.768,6.307-4.971,6.641a3.141,3.141,0,0,1-2.444-.347C42.713,59.656,38,56.42,32.465,52.615c-3.989-2.742-8.411-5.782-12.716-8.651-6.607-4.4-11.944-3.224-14.106-.265-2.229,3.049-1.548,8.468,5,13.7,7.379,5.913,12.4,9.319,12.455,9.354L47.688,81.7,81.8,85.227a3,3,0,0,1-.305,5.984Z" transform="translate(48.777 59.631)" fill="#e4e4e4"/>
+              <path id="Pfad_3436" data-name="Pfad 3436" d="M24.949,145.151a8.059,8.059,0,0,1-7.692-8.439l0-129.938a7.994,7.994,0,0,1,7.512-8.268L93.848-1.5a8.067,8.067,0,0,1,7.692,8.436l0,101.656h-6V6.774a2.065,2.065,0,0,0-1.881-2.28L24.949,4.5a2,2,0,0,0-1.7,2.112l0,130.265a2.061,2.061,0,0,0,1.878,2.28l68.717-.005a2,2,0,0,0,1.7-2.112l0-3.09h6v2.928a8,8,0,0,1-7.512,8.268Z" transform="translate(-16.395 2.35)" fill="#e4e4e4"/>
+            </g>
+          </g>
+        </g>
+        <rect id="Rechteck_1547" data-name="Rechteck 1547" width="179.652" height="146.288" transform="translate(232 388.866)" fill="none"/>
+      </g>
+    </g>
+    <g id="Gruppe_751" data-name="Gruppe 751" transform="translate(143.688 195)">
+      <path id="Pfad_3538" data-name="Pfad 3538" d="M49.458,8.25H10a2.25,2.25,0,1,1,0-4.5H49.458a2.25,2.25,0,0,1,0,4.5Z" transform="translate(24.184 7.395)" fill="#e4e4e4"/>
+      <path id="Pfad_3539" data-name="Pfad 3539" d="M9.465,8.25H6a2.25,2.25,0,0,1,0-4.5H9.465a2.25,2.25,0,0,1,0,4.5Z" transform="translate(10.385 7.395)" fill="#e4e4e4"/>
+      <path id="Pfad_3541" data-name="Pfad 3541" d="M47.43,8.25H10a2.25,2.25,0,1,1,0-4.5H47.43a2.25,2.25,0,0,1,0,4.5Z" transform="translate(15.097 117.395)" fill="#e4e4e4"/>
+    </g>
+    <g id="Gruppe_752" data-name="Gruppe 752" transform="translate(199.491 168.145)">
+      <path id="Pfad_3542" data-name="Pfad 3542" d="M23.694,77.5H75.017A2.483,2.483,0,0,0,77.5,75.017V5.483A2.483,2.483,0,0,0,75.017,3H5.483A2.483,2.483,0,0,0,3,5.483V56.806" transform="translate(0 0)" fill="#1f1f1f"/>
+      <path id="Pfad_3542_-_Kontur" data-name="Pfad 3542 - Kontur" d="M75.017,79.75H23.694a2.25,2.25,0,0,1,0-4.5H75.017a.234.234,0,0,0,.233-.233V5.483a.234.234,0,0,0-.233-.233H5.483a.234.234,0,0,0-.233.233V56.806a2.25,2.25,0,0,1-4.5,0V5.483A4.739,4.739,0,0,1,5.483.75H75.017A4.739,4.739,0,0,1,79.75,5.483V75.017A4.739,4.739,0,0,1,75.017,79.75Z" transform="translate(0 0)" fill="#80edda"/>
+      <path id="Pfad_3543" data-name="Pfad 3543" d="M10,6H43.111" transform="translate(21.972 9.417)" fill="#1f1f1f"/>
+      <path id="Pfad_3543_-_Kontur" data-name="Pfad 3543 - Kontur" d="M43.111,8.25H10a2.25,2.25,0,1,1,0-4.5H43.111a2.25,2.25,0,0,1,0,4.5Z" transform="translate(21.972 9.417)" fill="#80edda"/>
+      <path id="Pfad_3544" data-name="Pfad 3544" d="M6,6h4.139" transform="translate(9.417 9.417)" fill="#1f1f1f"/>
+      <path id="Pfad_3544_-_Kontur" data-name="Pfad 3544 - Kontur" d="M10.139,8.25H6a2.25,2.25,0,0,1,0-4.5h4.139a2.25,2.25,0,0,1,0,4.5Z" transform="translate(9.417 9.417)" fill="#80edda"/>
+    </g>
+    <path id="Pfad_3545" data-name="Pfad 3545" d="M3.5,53.357-9.383,66.086,44.857,12m0,0V31.462m0-19.462H25.4" transform="translate(194.682 196.395)" fill="#fff"/>
+    <path id="Pfad_3545_-_Kontur" data-name="Pfad 3545 - Kontur" d="M-9.383,68.336a2.243,2.243,0,0,1-1.593-.661,2.243,2.243,0,0,1-.657-1.589,2.243,2.243,0,0,1,.661-1.593L39.414,14.25H25.4a2.25,2.25,0,0,1,0-4.5H44.857a2.243,2.243,0,0,1,1.566.635h0l.053.054h0a2.248,2.248,0,0,1-.007,3.125h0l-.028.029L-7.794,67.679A2.243,2.243,0,0,1-9.383,68.336Z" transform="translate(194.682 196.395)" fill="#80edda"/>
+    <path id="Pfad_3594" data-name="Pfad 3594" d="M31.975,53.357,44.857,66.086-9.383,12m0,0V31.462m0-19.462H10.08" transform="translate(251.462 217.701) rotate(90)" fill="#fff"/>
+    <path id="Pfad_3594_-_Kontur" data-name="Pfad 3594 - Kontur" d="M44.857,68.336a2.243,2.243,0,0,1-1.589-.657L-10.968,13.6-11,13.568h0a2.243,2.243,0,0,1-.462-.7A2.243,2.243,0,0,1-11.633,12a2.243,2.243,0,0,1,.172-.864,2.241,2.241,0,0,1,.456-.695h0l.054-.054h0a2.242,2.242,0,0,1,.693-.459,2.242,2.242,0,0,1,.873-.176H10.08a2.25,2.25,0,1,1,0,4.5H-3.94L46.446,64.493a2.25,2.25,0,0,1-1.589,3.843Z" transform="translate(251.462 217.701) rotate(90)" fill="#80edda"/>
+  </g>
+</svg>

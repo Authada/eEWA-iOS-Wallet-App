@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <clipPath id="clip-icon_eEWA_wallet">
+      <rect width="1024" height="1024"/>
+    </clipPath>
+  </defs>
+  <g id="icon_eEWA_wallet" clip-path="url(#clip-icon_eEWA_wallet)">
+    <g id="app_icon" transform="matrix(0.966, -0.259, 0.259, 0.966, -115.069, 149.961)">
+      <g id="Illustration" transform="translate(42 42)">
+        <g id="illustration-2" data-name="illustration" transform="translate(0 6)">
+          <circle id="Ellipse_243" data-name="Ellipse 243" cx="470" cy="470" r="470" transform="translate(0 -6)" fill="#e6e6fd"/>
+        </g>
+      </g>
+      <g id="Gruppe_711" data-name="Gruppe 711" transform="translate(125.006 198.623)">
+        <path id="Pfad_3355" data-name="Pfad 3355" d="M9,64.6,45.4,101l91-91" transform="translate(604.91 443.876) rotate(-2)" fill="none" stroke="#00dcb4" stroke-linecap="round" stroke-linejoin="round" stroke-width="40"/>
+        <line id="Linie_207" data-name="Linie 207" x1="1.644" y1="157.456" transform="translate(95.693 275.115)" fill="none" stroke="#6e23d2" stroke-linecap="round" stroke-width="40"/>
+        <line id="Linie_211" data-name="Linie 211" x1="13" y1="37" transform="matrix(0.951, 0.309, -0.309, 0.951, 96.872, 512.288)" fill="none" stroke="#6e23d2" stroke-linecap="round" stroke-width="40"/>
+        <line id="Linie_212" data-name="Linie 212" x1="687.616" transform="translate(66.878 83.541)" fill="none" stroke="#6e23d2" stroke-linecap="round" stroke-width="40"/>
+        <path id="Pfad_3358" data-name="Pfad 3358" d="M762.432,16.88,81.809,5C37.732,5,2,45.458,2,95.365V547.19c0,49.909,35.732,90.365,79.809,90.365l383.277,5.029,60.29,1.052M800.09,276.095" transform="matrix(1, -0.017, 0.017, 1, -7.59, 2.049)" fill="none" stroke="#6e23d2" stroke-linecap="round" stroke-linejoin="round" stroke-width="40"/>
+        <path id="Pfad_3359" data-name="Pfad 3359" d="M187.7,16.728,298.43,44.849a25.46,25.46,0,0,1,19.3,25.287c-7.44,249.507-151.356,287.815-151.356,287.815s-11.364-3.025-28.12-13.061C96.269,319.746,20.367,249.532,15.018,70.137a25.46,25.46,0,0,1,19.3-25.287L145.042,16.728A86.71,86.71,0,0,1,187.7,16.728Z" transform="translate(504.085 320.426)" fill="none" stroke="#6e23d2" stroke-linecap="round" stroke-linejoin="round" stroke-width="40"/>
+        <path id="Pfad_3445" data-name="Pfad 3445" d="M6.234,572.859c4.454,37.042,31.5,73.125,75.575,73.125H401.045" transform="translate(-9.801 -485.954)" fill="none" stroke="#6e23d2" stroke-linecap="round" stroke-linejoin="round" stroke-width="40"/>
+        <path id="Pfad_3446" data-name="Pfad 3446" d="M0,0C0,49.909,34.187,90.365,76.359,90.365H372.318" transform="translate(781.849 250.396) rotate(-180)" fill="none" stroke="#6e23d2" stroke-linecap="square" stroke-linejoin="round" stroke-width="40"/>
+        <path id="Pfad_3448" data-name="Pfad 3448" d="M0,26.678V0" transform="translate(781.994 269.337)" fill="none" stroke="#6e23d2" stroke-linecap="round" stroke-width="40"/>
+      </g>
+    </g>
+  </g>
+</svg>

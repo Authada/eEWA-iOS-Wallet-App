@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="86" height="62" viewBox="0 0 86 62">
+    <g transform="translate(-11 -59)">
+        <rect data-name="Rechteck 1512" width="62" height="62" rx="8" transform="translate(23 59)" style="fill:#1f1f1f"/>
+        <path data-name="Rechteck 1545" transform="translate(11 63)" style="fill:none" d="M0 0h86v58H0z"/>
+        <g data-name="Gruppe 685">
+            <g data-name="Gruppe 718">
+                <path data-name="Pfad 3350" d="M2 36.925v-3.116A21.809 21.809 0 0 1 23.809 12h0" transform="translate(30.594 78.358)" style="stroke:#80edda;stroke-linecap:round;stroke-linejoin:round;stroke-width:3px;fill:none"/>
+                <path data-name="Pfad 3353" d="M17.462 28.925A12.462 12.462 0 1 0 5 16.462a12.462 12.462 0 0 0 12.462 12.463z" transform="translate(36.94 61.434)" style="stroke:#80edda;stroke-linecap:round;stroke-linejoin:round;stroke-width:3px;fill:none"/>
+                <path data-name="Pfad 3469" d="M23.809 36.924v-3.116A21.808 21.808 0 0 0 2 12h0" transform="translate(52.401 78.358)" style="stroke:#80edda;stroke-linecap:round;stroke-linejoin:round;stroke-width:3px;fill:none"/>
+            </g>
+        </g>
+    </g>
+</svg>
