@@ -36,9 +36,11 @@ struct DocumentSuccessState: ViewState {
   let error: ContentErrorView.Config?
   let title: LocalizableString.Key
   let caption: LocalizableString.Key?
-  let holderName: String?
+  let mainDisplayValue: String?
   let config: IssuanceFlowUiConfig
   let documentIdentifier: String
+  let documentSymbol: Image?
+  let documentTypeName: String?
 }
 
 final class DocumentSuccessViewModel<Router: RouterHost>: BaseViewModel<Router, DocumentSuccessState> {
@@ -64,9 +66,11 @@ final class DocumentSuccessViewModel<Router: RouterHost>: BaseViewModel<Router, 
         error: nil,
         title: .issuanceSuccessTitle,
         caption: nil,
-        holderName: nil,
+        mainDisplayValue: nil,
         config: config,
-        documentIdentifier: documentIdentifier
+        documentIdentifier: documentIdentifier,
+        documentSymbol: nil,
+        documentTypeName: nil
       )
     )
   }
@@ -74,7 +78,9 @@ final class DocumentSuccessViewModel<Router: RouterHost>: BaseViewModel<Router, 
   func initialize() async {
     setNewState(
       caption: interactor.getDocumentSuccessCaption(for: viewState.documentIdentifier),
-      holderName: interactor.getHoldersName(for: viewState.documentIdentifier)
+      mainDisplayValue: interactor.getMainDisplayValue(for: viewState.documentIdentifier),
+      documentSymbol: interactor.getDocumentSymbol(for: viewState.documentIdentifier),
+      documentTypeName: interactor.getDocumentTypeName(for: viewState.documentIdentifier)
     )
   }
 
@@ -101,16 +107,20 @@ final class DocumentSuccessViewModel<Router: RouterHost>: BaseViewModel<Router, 
   private func setNewState(
     error: ContentErrorView.Config? = nil,
     caption: LocalizableString.Key? = nil,
-    holderName: String? = nil
+    mainDisplayValue: String? = nil,
+    documentSymbol: Image? = nil,
+    documentTypeName: String? = nil
   ) {
     setState { previous in
         .init(
           error: error,
           title: previous.title,
           caption: caption ?? previous.caption,
-          holderName: holderName ?? previous.holderName,
+          mainDisplayValue: mainDisplayValue ?? previous.mainDisplayValue,
           config: previous.config,
-          documentIdentifier: previous.documentIdentifier
+          documentIdentifier: previous.documentIdentifier,
+          documentSymbol: documentSymbol ?? previous.documentSymbol,
+          documentTypeName: documentTypeName ?? previous.documentTypeName
         )
     }
   }

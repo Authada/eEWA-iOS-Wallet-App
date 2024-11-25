@@ -32,21 +32,24 @@ import Foundation
 import logic_resources
 
 public enum WalletCoreError: LocalizedError {
-  case unableFetchDocuments
-  case unableFetchDocument
-  case missingPid
-  case unableToIssueAndStore
-
-  public var errorDescription: String? {
-    return switch self {
-    case .unableFetchDocuments:
-      LocalizableString.shared.get(with: .errorUnableFetchDocuments)
-    case .unableFetchDocument:
-      LocalizableString.shared.get(with: .errorUnableFetchDocument)
-    case .missingPid:
-      LocalizableString.shared.get(with: .missingPid)
-    case .unableToIssueAndStore:
-      LocalizableString.shared.get(with: .unableToIssueAndStore)
+    case unableFetchDocuments
+    case unableFetchDocument
+    case missingPid
+    case unableToIssueAndStore
+    case transactionCodeFormat([String])
+    
+    public var errorDescription: String? {
+        return switch self {
+        case .unableFetchDocuments:
+            LocalizableString.shared.get(with: .errorUnableFetchDocuments)
+        case .unableFetchDocument:
+            LocalizableString.shared.get(with: .errorUnableFetchDocument)
+        case .missingPid:
+            LocalizableString.shared.get(with: .missingPid)
+        case .unableToIssueAndStore:
+            LocalizableString.shared.get(with: .unableToIssueAndStore)
+        case .transactionCodeFormat(let args):
+          LocalizableString.shared.get(with: .transactionCodeFormatError(args))
+        }
     }
-  }
 }

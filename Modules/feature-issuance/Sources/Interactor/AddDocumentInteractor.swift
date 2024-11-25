@@ -38,7 +38,7 @@ import logic_core
 public protocol AddDocumentInteractor {
   func fetchStoredDocuments(with flow: IssuanceFlowUiConfig.Flow) -> StoredDocumentsPartialState
   func loadSampleData() async -> LoadSampleDataPartialState
-  func issueDocument(docType: String) async -> IssueDocumentPartialState
+  func issueDocument(docType: String, format: DataFormat) async -> IssueDocumentPartialState
 }
 
 final class AddDocumentInteractorImpl: AddDocumentInteractor {
@@ -61,6 +61,8 @@ final class AddDocumentInteractorImpl: AddDocumentInteractor {
       case .MDL:
         item.isEnabled = flow == .extraDocument
       case .AGE:
+        item.isEnabled = flow == .extraDocument
+      case .EMAIL:
         item.isEnabled = flow == .extraDocument
       case .GENERIC:
         break
@@ -95,9 +97,9 @@ final class AddDocumentInteractorImpl: AddDocumentInteractor {
     }
   }
 
-  public func issueDocument(docType: String) async -> IssueDocumentPartialState {
+    public func issueDocument(docType: String, format: DataFormat) async -> IssueDocumentPartialState {
     do {
-      let doc = try await walletController.issueDocument(docType: docType, format: .cbor)
+      let doc = try await walletController.issueDocument(docType: docType, format: format)
       return .success(doc.id)
     } catch {
       return .failure(WalletCoreError.unableToIssueAndStore)

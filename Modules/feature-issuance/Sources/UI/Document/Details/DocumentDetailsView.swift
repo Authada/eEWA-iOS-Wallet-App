@@ -57,13 +57,13 @@ public struct DocumentDetailsView<Router: RouterHost>: View {
         VSpacer.medium()
 
         ForEach(viewModel.viewState.document.documentFields) { documentFieldContent in
-
           switch documentFieldContent.value {
           case .string(let value):
             KeyValueView(
               title: .custom(documentFieldContent.title),
               subTitle: .custom(value),
-              isLoading: viewModel.viewState.isLoading
+              isLoading: viewModel.viewState.isLoading,
+              isMuted: documentFieldContent.muted
             )
           case .image(let data):
             KeyValueView(

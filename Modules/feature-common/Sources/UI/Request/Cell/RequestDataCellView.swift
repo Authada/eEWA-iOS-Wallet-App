@@ -66,29 +66,31 @@ extension BaseRequestView {
         .padding(.bottom)
       case .requestDataSection(let section):
         HStack(spacing: .zero) {
-#if DEBUG
+
           HStack(spacing: SPACING_SMALL) {
 
-            Theme.shared.image.id
+              section.type.icon
               .resizable()
               .scaledToFit()
               .frame(width: 45)
+              .foregroundStyle(ColorHelper.textColor)
 
             Text(section.title)
               .typography(Theme.shared.font.titleMedium)
-              .foregroundStyle(Theme.shared.color.black)
-
+              .foregroundStyle(ColorHelper.textColor)
+              Spacer()
           }
           .padding([.horizontal, .vertical], SPACING_SMALL)
-          .background(Theme.shared.color.secondary)
+          .background(ColorHelper.background)
           .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
-#endif
-          Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: 50)
         .padding(.bottom)
         .disabled(isLoading)
         .shimmer(isLoading: isLoading)
+        .onTapGesture {
+            self.onTap?(section.id)
+        }
       case .requestDataVerification(let verification):
         ContentExpandableView(title: .custom(verification.title)) {
 

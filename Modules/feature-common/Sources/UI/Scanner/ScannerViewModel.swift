@@ -33,77 +33,86 @@ import logic_core
 import logic_resources
 
 struct ScannerState: ViewState {
-  let config: ScannerUiConfig
-  let error: LocalizableString.Key?
-
-  var title: LocalizableString.Key {
-    return config.flow.title
-  }
-
-  var caption: LocalizableString.Key {
-    return config.flow.caption
-  }
+    let config: ScannerUiConfig
+    let error: LocalizableString.Key?
+    
+    var title: LocalizableString.Key {
+        return config.flow.title
+    }
+    
+    var caption: LocalizableString.Key {
+        return config.flow.caption
+    }
 }
 
 final class ScannerViewModel<Router: RouterHost>: BaseViewModel<Router, ScannerState> {
-
-  private let walletKitController: WalletKitController
-
-  init(
-    config: any UIConfigType,
-    router: Router,
-    walletKitController: WalletKitController
-  ) {
-    guard let config = config as? ScannerUiConfig else {
-      fatalError("ScannerViewModel:: Invalid configuraton")
-    }
-    self.walletKitController = walletKitController
-    super.init(router: router, initialState: .init(config: config, error: nil))
-  }
-
-    func onResult(scanResult: String) async {
-    switch viewState.config.flow {
-    case .presentation:
-        await router.push(
-        with: .presentationRequest(
-          presentationCoordinator: walletKitController.startCrossDevicePresentation(
-            urlString: scanResult
-          )
-        )
-      )
-    case .issuing(let config):
-      var successNavType: UIConfig.TwoWayNavigationType {
-        return switch config.flow {
-        case .noDocument: .push(.dashboard)
-        case .extraDocument: .popTo(.dashboard)
+    
+    private let walletKitController: WalletKitController
+    
+    init(
+        config: any UIConfigType,
+        router: Router,
+        walletKitController: WalletKitController
+    ) {
+        guard let config = config as? ScannerUiConfig else {
+            fatalError("ScannerViewModel:: Invalid configuraton")
         }
-      }
-      router.push(
-        with: .credentialOfferRequest(
-          config: UIConfig.Generic(
-            arguments: ["uri": scanResult],
-            navigationSuccessType: successNavType,
-            navigationCancelType: .popTo(.issuanceAddDocument(config: config))
-          )
+        self.walletKitController = walletKitController
+        super.init(router: router, initialState: .init(config: config, error: nil))
+    }
+    
+    func onResult(scanResult: String) async {
+        
+        switch viewState.config.flow {
+        case .presentation:
+            await startPresentation(scanResult: scanResult)
+        case .issuing(let config):
+            startIssuing(scanResult: scanResult, config:config)
+        case .unified(let config):
+            if scanResult.contains("openid-credential-offer://") {
+                startIssuing(scanResult: scanResult, config: config)
+            } else {
+                await startPresentation(scanResult: scanResult)
+            }
+        }
+    }
+    
+    func startPresentation(scanResult: String) async {
+        await router.push(
+            with: .presentationRequest(
+                presentationCoordinator: walletKitController.startCrossDevicePresentation(
+                    urlString: scanResult
+                )
+            )
         )
-      )
     }
-  }
-
-  func onDismiss() {
-    router.pop()
-  }
-
-  func onError() {
-    setState {
-      .init(
-        config: $0.config,
-        error: .cameraError
-      )
+    
+    func startIssuing(scanResult: String, config: IssuanceFlowUiConfig){
+        router.push(
+            with: .credentialOfferRequest(
+                config: IssuaceOfferUIConfig(
+                    offerUri: scanResult,
+                    navigationSuccessType: .popTo(.dashboard),
+                    navigationCancelType: .popTo(.dashboard)
+                )
+            )
+        )
     }
-  }
-
-  func onErrorClick() {
-    UIApplication.shared.openAppSettings()
-  }
+    
+    func onDismiss() {
+        router.pop()
+    }
+    
+    func onError() {
+        setState {
+            .init(
+                config: $0.config,
+                error: .cameraError
+            )
+        }
+    }
+    
+    func onErrorClick() {
+        UIApplication.shared.openAppSettings()
+    }
 }

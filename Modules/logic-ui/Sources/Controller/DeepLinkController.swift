@@ -99,7 +99,7 @@ final class DeepLinkControllerImpl: DeepLinkController {
     switch deepLinkExecutable.action {
     case .openid4vp:
         let session = await walletKitController.startSameDevicePresentation(deepLink: deepLinkExecutable.link)
-        DispatchQueue.main.async {
+        await MainActor.run {
             if !routerHost.isScreenForeground(with: .presentationRequest(presentationCoordinator: session)) {
                 routerHost.push(with: .presentationRequest(presentationCoordinator: session))
             } else {
@@ -113,14 +113,16 @@ final class DeepLinkControllerImpl: DeepLinkController {
       deepLinkExecutable.plainUrl.open()
     case .credential_offer:
       let config = UIConfig.Generic(
-        arguments: ["uri": deepLinkExecutable.plainUrl.absoluteString],
+        arguments: ["uri": deepLinkExecutable.plainUrl.absoluteString, "needsAuth":"true"],
         navigationSuccessType: routerHost.userIsLoggedInWithDocuments()
         ? .popTo(.dashboard)
         : .push(.dashboard),
         navigationCancelType: .pop
       )
       if !routerHost.isScreenForeground(with: .credentialOfferRequest(config: config)) {
-        routerHost.push(with: .credentialOfferRequest(config: config))
+          await MainActor.run {
+              routerHost.push(with: .credentialOfferRequest(config: config))
+          }
       } else {
         postNotification(
           with: NSNotification.CredentialOffer,

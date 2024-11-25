@@ -137,6 +137,12 @@ final class DashboardViewModel<Router: RouterHost>: BaseViewModel<Router, Dashbo
         }
     }
     
+    func onOpenIssWebdemo() {
+        if let url = URL(string: "Wallet Issuer Webdemo URL".valueFromBundle), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
     func toggleBleModal() {
         guard viewState.phase == .active else {
             setNewState(pendingBleModalAction: true)
@@ -165,7 +171,7 @@ final class DashboardViewModel<Router: RouterHost>: BaseViewModel<Router, Dashbo
     
     func onShowScanner() {
         isMoreModalShowing = false
-        router.push(with: .qrScanner(config: ScannerUiConfig(flow: .presentation)))
+        router.push(with: .qrScanner(config: ScannerUiConfig(flow: .unified(IssuanceFlowUiConfig(flow: .extraDocument)))))
     }
     func onShowProxyDetail() {
         isMoreModalShowing = false

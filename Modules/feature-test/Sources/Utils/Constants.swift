@@ -85,7 +85,7 @@ extension Constants {
   
   static let mockPresentationSession = PresentationSession(
     presentationService: MockPresentationService(flow: .other),
-    docIdAndTypes: [:],
+    docIdAndTypes: [],
     userAuthenticationRequired: false
   )
 }
@@ -96,6 +96,7 @@ extension Constants {
       DocElementsViewModel(
         docId: Constants.isoMdlModelId,
         docType: DocumentTypeIdentifier.MDL.rawValue,
+        dataFormat: .cbor,
         isEnabled: true,
         elements: [
           ElementViewModel(

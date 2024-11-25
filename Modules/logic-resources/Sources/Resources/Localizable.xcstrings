@@ -386,6 +386,17 @@
         }
       }
     },
+    "cnf" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmation Key"
+          }
+        }
+      }
+    },
     "credential_offer_partial_success_caption" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -496,6 +507,17 @@
         }
       }
     },
+    "email" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
     "error_unable_fetch_document" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -514,6 +536,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unable to fetch documents"
+          }
+        }
+      }
+    },
+    "exp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date of Expiry"
           }
         }
       }
@@ -705,6 +738,17 @@
         }
       }
     },
+    "iat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date of Issue"
+          }
+        }
+      }
+    },
     "identify" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -734,6 +778,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invalid wallet code"
+          }
+        }
+      }
+    },
+    "iss" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuer"
+          }
+        }
+      }
+    },
+    "issuance_code_caption" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type the %@-digit transaction code you received"
+          }
+        }
+      }
+    },
+    "issuance_code_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ requires verification"
           }
         }
       }
@@ -821,7 +898,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can now add your %@"
+            "value" : "The document \"%@\" has been added to your wallet."
           }
         }
       }
@@ -877,6 +954,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Issued at"
+          }
+        }
+      }
+    },
+    "issuer_validated" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuer validated"
           }
         }
       }
@@ -1107,6 +1195,17 @@
         }
       }
     },
+    "open_iss_webdemo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open eEWA Issuer Website…"
+          }
+        }
+      }
+    },
     "open_rp_webdemo" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1201,7 +1300,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show QR"
+            "value" : "Proximity Document Sharing"
           }
         }
       }
@@ -1910,6 +2009,17 @@
         }
       }
     },
+    "transaction_code_format_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid transaction code format. Length should be between %@ to %@ digits and only numeric characters are allowed."
+          }
+        }
+      }
+    },
     "try_again" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1998,6 +2108,28 @@
         }
       }
     },
+    "vct" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifiable Credential Type"
+          }
+        }
+      }
+    },
+    "vct#integrity" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifiable Credential Type - Integrity"
+          }
+        }
+      }
+    },
     "vehicle_category_code" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2005,6 +2137,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vehicle category code"
+          }
+        }
+      }
+    },
+    "verified_email" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verified Email"
           }
         }
       }

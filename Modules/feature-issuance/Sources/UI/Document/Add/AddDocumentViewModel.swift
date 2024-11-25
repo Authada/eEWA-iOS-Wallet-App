@@ -96,8 +96,10 @@ final class AddDocumentViewModel<Router: RouterHost>: BaseViewModel<Router, AddD
     switch documentIdentifier {
     case .GENERIC:
       loadSampleData()
+    case .EMAIL:
+        issueDocument(docType: documentIdentifier.rawValue, format: .sdjwt)
     default:
-      issueDocument(docType: documentIdentifier.rawValue)
+        issueDocument(docType: documentIdentifier.rawValue, format: .cbor)
     }
   }
 
@@ -109,12 +111,12 @@ final class AddDocumentViewModel<Router: RouterHost>: BaseViewModel<Router, AddD
     router.pop(animated: true)
   }
 
-  private func issueDocument(docType: String) {
+  private func issueDocument(docType: String, format: DataFormat) {
     Task {
       setNewState(
         addDocumentCellModels: transformCellLoadingState(with: true)
       )
-      switch await interactor.issueDocument(docType: docType) {
+      switch await interactor.issueDocument(docType: docType, format: format) {
       case .success(let docId):
         router.push(
           with: .issuanceSuccess(
@@ -164,8 +166,8 @@ final class AddDocumentViewModel<Router: RouterHost>: BaseViewModel<Router, AddD
       deepLinkController.removeCachedDeepLinkURL()
       router.push(
         with: .credentialOfferRequest(
-          config: UIConfig.Generic(
-            arguments: ["uri": deepLink.plainUrl.absoluteString],
+            config: IssuaceOfferUIConfig(
+            offerUri: deepLink.plainUrl.absoluteString,
             navigationSuccessType: .push(.dashboard),
             navigationCancelType: .pop
           )

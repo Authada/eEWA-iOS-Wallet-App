@@ -48,5 +48,7 @@
 	<string>$(WALLET_HOST_URL)</string>
 	<key>Wallet RP Webdemo URL</key>
 	<string>$(WALLET_RP_WEBDEMO_URL)</string>
+	<key>Wallet Issuer Webdemo URL</key>
+	<string>$(WALLET_ISSUER_WEBDEMO_URL)</string>
 </dict>
 </plist>

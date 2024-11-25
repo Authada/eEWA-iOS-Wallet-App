@@ -72,9 +72,9 @@ final class ProximityPresentationSessionCoordinator: PresentationSessionCoordina
   }
   
   public func needsPinCheck() -> Bool {
-    return !(session.docIdAndTypes.keys.first ==
-                   DocumentManager.proxyTag &&
-                   session.docIdAndTypes.keys.count == 1)
+      return !(session.docIdAndTypes.first?.docId ==
+               ProxyPidDocument.proxyTagID &&
+               session.docIdAndTypes.count == 1)
   }
 
   public func startQrEngagement() async throws -> UIImage {
@@ -91,7 +91,7 @@ final class ProximityPresentationSessionCoordinator: PresentationSessionCoordina
 
   public func requestReceived() async throws -> PresentationRequest {
     guard session.disclosedDocuments.isEmpty == false else {
-      throw session.uiError ?? .init(description: "Failed to Find knonw documents to send")
+      throw session.uiError ?? .init(description: "Failed to find known documents to send")
     }
 
     let presentationRequest = PresentationRequest(

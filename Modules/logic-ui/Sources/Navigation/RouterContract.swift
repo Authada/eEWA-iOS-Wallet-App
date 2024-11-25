@@ -57,6 +57,7 @@ public indirect enum AppRoute: Equatable {
     case credentialOfferRequest(config: any UIConfigType)
     case proxyPIDDetails
     case onboarding
+    case issuanceCode(config: any UIConfigType)
     
     
     public var info: (key: String, arguments: [String: String]) {
@@ -99,6 +100,8 @@ public indirect enum AppRoute: Equatable {
             (key: "ProxyPIDDetails", arguments: [:])
         case .onboarding:
             (key: "Onboarding", arguments: [:])
+        case .issuanceCode(config: let config):
+            (key: "IssuanceCode", arguments: ["config": config.log])
         }
     }
 }

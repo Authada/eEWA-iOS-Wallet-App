@@ -115,9 +115,8 @@ public struct DashboardView<Router: RouterHost>: View {
               gravity: .start,
               onAction: viewModel.onUpdatePin()
             )
-#if DEBUG
             WrapButtonView(
-              title: .showQRTap,
+              title: .proximityConnectivityTitle,
               textColor: ColorHelper.textColor,
               backgroundColor: .clear,
               iconColor: ColorHelper.primary,
@@ -125,7 +124,6 @@ public struct DashboardView<Router: RouterHost>: View {
               gravity: .start,
               onAction: viewModel.onShare()
             )
-#endif
             WrapButtonView(
               title: .openRPWebdemo,
               textColor: ColorHelper.textColor,
@@ -134,6 +132,15 @@ public struct DashboardView<Router: RouterHost>: View {
               icon: Theme.shared.image.browserIcon,
               gravity: .start,
               onAction: viewModel.onOpenRPWebdemo()
+            )
+            WrapButtonView(
+              title: .openIssWebdemo,
+              textColor: ColorHelper.textColor,
+              backgroundColor: .clear,
+              iconColor: ColorHelper.primary,
+              icon: Theme.shared.image.browserIcon,
+              gravity: .start,
+              onAction: viewModel.onOpenIssWebdemo()
             )
           }
 

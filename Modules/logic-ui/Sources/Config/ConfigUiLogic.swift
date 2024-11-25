@@ -47,9 +47,9 @@ public protocol ConfigUiLogic {
 struct ConfigUiLogicImpl: ConfigUiLogic {
 
   public var backgroundColorForScreenDictionary: [AppRouteKey: UIConfig.ToolBar] = [
-    AppRoute.dashboard.info.key: .init(ColorHelper.surface),
-    AppRoute.welcome.info.key: .init(Theme.shared.color.secondary),
-    AppRoute.issuanceDocumentDetails(config: NoConfig()).info.key: .init(Theme.shared.color.secondary)
+    AppRoute.dashboard.info.key: .init(ColorHelper.background),
+    AppRoute.welcome.info.key: .init(ColorHelper.background),
+    AppRoute.issuanceDocumentDetails(config: NoConfig()).info.key: .init(ColorHelper.background)
   ]
 
   public var dashboardRoute: AppRoute {

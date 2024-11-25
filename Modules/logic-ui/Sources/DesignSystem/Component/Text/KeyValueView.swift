@@ -42,29 +42,34 @@ public struct KeyValueView: View {
   let value: Value
   let alignment: KeyValueView.Alignment
   let isLoading: Bool
+  let muted: Bool
 
   public init(
     title: LocalizableString.Key,
     subTitle: LocalizableString.Key,
     alignment: KeyValueView.Alignment = .start,
-    isLoading: Bool = false
+    isLoading: Bool = false,
+    isMuted: Bool = false
   ) {
     self.title = title
     self.value = .string(subTitle)
     self.alignment = alignment
     self.isLoading = isLoading
+    self.muted = isMuted
   }
 
   public init(
     title: LocalizableString.Key,
     image: Image,
     alignment: KeyValueView.Alignment = .start,
-    isLoading: Bool = false
+    isLoading: Bool = false,
+    isMuted: Bool = false
   ) {
     self.title = title
     self.value = .image(image)
     self.alignment = alignment
     self.isLoading = isLoading
+    self.muted = isMuted
   }
 
   public var body: some View {
@@ -102,12 +107,20 @@ public struct KeyValueView: View {
     switch value {
     case .string(let key):
       Text(key)
-        .foregroundColor(Theme.shared.color.textPrimaryDark)
-        .typography(Theme.shared.font.bodyLarge)
         .if(isLoading) { view in
           view
             .lineLimit(1)
         }
+        .if(self.muted, transform: { view in
+            view
+                .foregroundColor(Theme.shared.color.textSecondaryDark)
+                .font(Theme.shared.font.bodyMedium.font)
+          })
+        .if(!self.muted, transform: { view in
+            view
+                .foregroundColor(Theme.shared.color.textPrimaryDark)
+                .font(Theme.shared.font.titleMedium.font)
+          })
     case .image(let image):
       image
         .resizable()

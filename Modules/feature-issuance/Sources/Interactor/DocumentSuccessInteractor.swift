@@ -31,36 +31,75 @@
 import logic_core
 import logic_business
 import logic_resources
+import SwiftUI
 
 public protocol DocumentSuccessInteractor {
-  func getHoldersName(for documentIdentifier: String) -> String?
-  func getDocumentSuccessCaption(for documentIdentifier: String) -> LocalizableString.Key?
+    func getMainDisplayValue(for documentIdentifier: String) -> String?
+    func getDocumentSuccessCaption(for documentIdentifier: String) -> LocalizableString.Key?
+    func getDocumentTypeName(for documentIdentifier: String) -> String?
+    func getDocumentSymbol(for documentIdentifier: String) -> Image?
 }
 
 final class DocumentSuccessInteractorImpl: DocumentSuccessInteractor {
-
-  private let walletController: WalletKitController
-
-  init(walletController: WalletKitController ) {
-    self.walletController = walletController
-  }
-
-  public func getHoldersName(for documentIdentifier: String) -> String? {
-    guard
-      let bearerName = walletController.fetchDocument(with: documentIdentifier)?.getBearersName()
-    else {
-      return nil
+    
+    private let walletController: WalletKitController
+    
+    init(walletController: WalletKitController ) {
+        self.walletController = walletController
     }
-    return  "\(bearerName.first) \(bearerName.last)"
-  }
-
-  public func getDocumentSuccessCaption(for documentIdentifier: String) -> LocalizableString.Key? {
-    guard
-      let type = walletController.fetchDocument(with: documentIdentifier)?.docType
-    else {
-      return nil
+    
+    public func getMainDisplayValue(for documentIdentifier: String) -> String? {
+        
+        guard let document = walletController.fetchDocument(with: documentIdentifier) else {
+            return nil
+        }
+        var documentMainValue :String? = nil
+        if let bearerName = document.getBearersName() {
+            documentMainValue = "\(bearerName.first) \(bearerName.last)"
+        }
+        else {
+            if let displayString = document.displayStrings.sorted(by: {$0.order < $1.order}).first{
+                documentMainValue = displayString.value
+            }
+            
+        }
+        return documentMainValue
     }
-    return .issuanceSuccessCaption([DocumentTypeIdentifier(rawValue: type).localizedTitle])
-  }
-
+    
+    public func getDocumentSuccessCaption(for documentIdentifier: String) -> LocalizableString.Key? {
+        guard
+            let type = walletController.fetchDocument(with: documentIdentifier)?.docTypes.first
+        else {
+            return nil
+        }
+        return .issuanceSuccessCaption([DocumentTypeIdentifier(rawValue: type).localizedTitle])
+    }
+    
+    public func getDocumentTypeName(for documentIdentifier: String) -> String? {
+        guard
+            let type = walletController.fetchDocument(with: documentIdentifier)?.docTypes.first
+        else {
+            return nil
+        }
+        return DocumentTypeIdentifier(rawValue: type).localizedTitle
+    }
+    
+    public func getDocumentSymbol(for documentIdentifier: String) -> Image? {
+        guard
+            let type = walletController.fetchDocument(with: documentIdentifier)?.docTypes.first
+        else {
+            return nil
+        }
+        let docType = DocumentTypeIdentifier(rawValue: type)
+        switch docType {
+        case .PID:
+            return Theme.shared.image.ident
+        case .MDL:
+            return Theme.shared.image.ic_eaa_mdl
+        case .EMAIL:
+            return Theme.shared.image.ic_eaa_email
+        default:
+            return Theme.shared.image.ic_eaa_generic
+        }
+    }
 }

@@ -63,9 +63,11 @@ extension DocumentListView {
                                     .foregroundColor(ColorHelper.primary)
                                     .aspectRatio(contentMode: .fit)
                             } else {
-                                Theme.shared.image.idStroke
+                                item.value.icon
+                                    .resizable()
                                     .foregroundColor(ColorHelper.primary)
                                     .aspectRatio(contentMode: .fit)
+                                    
                             }
                             
                             
@@ -120,6 +122,24 @@ extension DocumentListView {
                                         .foregroundColor(Theme.shared.color.textSecondaryDark)
                                         .minimumScaleFactor(0.5)
                                         .lineLimit(2)
+                                }
+                            }
+                        }
+                        if let docFormat = item.value.docFormat {
+                            ZStack {
+                                switch docFormat {
+                                case .cbor:
+                                    Text("mdoc")
+                                        .typography(Theme.shared.font.bodySmall)
+                                        .foregroundColor(.orange)
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
+                                case .sdjwt:
+                                    Text("SD-JWT")
+                                        .typography(Theme.shared.font.bodySmall)
+                                        .foregroundColor(.indigo)
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
                                 }
                             }
                         }

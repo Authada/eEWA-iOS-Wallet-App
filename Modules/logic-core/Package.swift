@@ -13,7 +13,7 @@ let package = Package(
   ],
   dependencies: [
     .package(
-      url: "https://github.com/Authada/eEWA-iOS-Wallet-Kit.git", branch: "main"
+      url: "https://github.com/Authada/eEWA-iOS-Wallet-Kit.git", exact: "0.2.0"
     ),
     .package(
       name: "logic-resources",

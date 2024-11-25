@@ -54,8 +54,8 @@ final class PresentationRequestViewModel<Router: RouterHost>: BaseRequestViewMod
         relyingParty: authenticationRequest.relyingParty,
         isTrusted: authenticationRequest.isTrusted
       )
-    case .failure:
-      self.onEmptyDocuments()
+    case .failure(let error):
+      self.onError(with: error)
     }
   }
 

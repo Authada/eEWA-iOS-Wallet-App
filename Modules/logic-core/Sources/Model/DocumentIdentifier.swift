@@ -29,13 +29,15 @@
  * governing permissions and limitations under the Licence.
  */
 import Foundation
+import SwiftUI
 import logic_resources
 
-public enum DocumentTypeIdentifier: RawRepresentable, Equatable {
+public enum DocumentTypeIdentifier: RawRepresentable, Equatable, Sendable {
 
   case PID
   case MDL
   case AGE
+  case EMAIL
   case GENERIC(docType: String)
 
   public var localizedTitle: String {
@@ -46,6 +48,8 @@ public enum DocumentTypeIdentifier: RawRepresentable, Equatable {
       LocalizableString.shared.get(with: .mdl)
     case .AGE:
       LocalizableString.shared.get(with: .ageVerification)
+    case .EMAIL:
+      LocalizableString.shared.get(with: .verifiedEmail)
     case .GENERIC(let docType):
       LocalizableString.shared.get(with: .dynamic(key: docType))
     }
@@ -59,14 +63,29 @@ public enum DocumentTypeIdentifier: RawRepresentable, Equatable {
       "org.iso.18013.5.1.mDL"
     case .AGE:
       "eu.europa.ec.eudiw.pseudonym.age_over_18.1"
+    case .EMAIL:
+      "urn:eu.europa.ec.eudi:email:1"
     case .GENERIC(let docType):
       docType
     }
   }
+    
+    public var icon: Image {
+        switch self {
+        case .PID:
+            return Theme.shared.image.id
+        case .MDL:
+            return Theme.shared.image.ic_eaa_mdl
+        case .EMAIL:
+            return Theme.shared.image.ic_eaa_email
+        default:
+            return Theme.shared.image.ic_eaa_generic
+        }
+    }
 
   public var isSupported: Bool {
     return switch self {
-    case .PID, .MDL, .AGE: true
+    case .PID, .MDL, .AGE, .EMAIL: true
     case .GENERIC: false
     }
   }
@@ -79,6 +98,8 @@ public enum DocumentTypeIdentifier: RawRepresentable, Equatable {
       self = .MDL
     case "eu.europa.ec.eudiw.pseudonym.age_over_18.1":
       self = .AGE
+    case "urn:eu.europa.ec.eudi:email:1":
+      self = .EMAIL
     default:
       self = .GENERIC(docType: rawValue)
     }

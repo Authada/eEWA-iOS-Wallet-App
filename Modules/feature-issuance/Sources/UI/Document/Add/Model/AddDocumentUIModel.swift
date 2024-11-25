@@ -65,13 +65,6 @@ public extension AddDocumentUIModel {
     [
       .init(
         isEnabled: true,
-        documentName: .pid,
-        image: Theme.shared.image.id,
-        isLoading: false,
-        type: .PID
-      ),
-      .init(
-        isEnabled: true,
         documentName: .mdl,
         image: Theme.shared.image.id,
         isLoading: false,
@@ -79,10 +72,10 @@ public extension AddDocumentUIModel {
       ),
       .init(
         isEnabled: true,
-        documentName: .ageVerification,
+        documentName: .verifiedEmail,
         image: Theme.shared.image.id,
         isLoading: false,
-        type: .AGE
+        type: .EMAIL
       )
     ]
   }

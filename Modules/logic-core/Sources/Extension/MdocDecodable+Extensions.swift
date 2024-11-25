@@ -33,67 +33,6 @@ import logic_resources
 
 public extension MdocDecodable {
 
-  func getExpiryDate(parser: (String) -> String) -> String? {
-    if let expiryDate = expiryDateValue {
-      return parser(expiryDate)
-    } else {
-      return nil
-    }
-  }
-
-  func hasExpired(parser: (String) -> Date?) -> Bool {
-    guard let value = expiryDateValue, let expiryDate = parser(value) else {
-      return false
-    }
-    return expiryDate < Date.now
-  }
-
-  func getBearersName() -> (first: String, last: String)? {
-    var name: (first: String, last: String)?
-
-    switch self {
-    case let pid as EuPidModel:
-      if let firstName = pid.given_name, let lastName = pid.family_name {
-        name = (firstName, lastName)
-      }
-    case let mdl as IsoMdlModel:
-      if let firstName = mdl.givenName, let lastName = mdl.familyName {
-        name = (firstName, lastName)
-      }
-    case let generic as GenericMdocModel:
-      if
-        let firstName = generic.displayStrings.first(
-          where: {
-            $0.name.replacingOccurrences(of: "_", with: "").lowercased() == "givenname"
-          }
-        )?.value,
-        let lastName = generic.displayStrings.first(
-          where: {
-            $0.name.replacingOccurrences(of: "_", with: "").lowercased() == "familyname"
-          }
-        )?.value {
-        name = (firstName, lastName)
-      }
-    default: break
-    }
-
-    return name
-  }
-
-  func getPortrait() -> Image? {
-    var image: Image?
-
-    switch self {
-    case let mdl as IsoMdlModel:
-      if let portrait = mdl.portrait, let uiImage = UIImage(data: Data(portrait)) {
-        image = Image(uiImage: uiImage)
-      }
-    default: break
-    }
-
-    return image
-  }
-
   func getDrivingPrivileges(parser: (String) -> String) -> NameValue? {
     guard
       let mdl = self as? IsoMdlModel,
@@ -122,22 +61,5 @@ public extension MdocDecodable {
           .dropLast()),
       order: IsoMdlModel.CodingKeys.allCases.firstIndex(of: .drivingPrivileges) ?? .max
     )
-  }
-
-  private var expiryDateValue: String? {
-    return switch self {
-    case let pid as EuPidModel:
-      pid.expiry_date
-    case let mdl as IsoMdlModel:
-      mdl.expiryDate
-    case let generic as GenericMdocModel:
-      generic.displayStrings.first(
-        where: {
-          $0.name.replacingOccurrences(of: "_", with: "").lowercased() == "expirydate"
-        }
-      )?.value
-    default:
-      nil
-    }
   }
 }

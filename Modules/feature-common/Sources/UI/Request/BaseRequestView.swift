@@ -78,9 +78,9 @@ public struct BaseRequestView<Router: RouterHost>: View {
                 
                 Spacer()
                 
-#if DEBUG
-                visibilityIcon
-#endif
+                if !isProxyPidIncluded(items: viewModel.viewState.items) {
+                    visibilityIcon
+                }
             }
             
             VSpacer.small()
@@ -263,5 +263,21 @@ public struct BaseRequestView<Router: RouterHost>: View {
                     .foregroundStyle(Theme.shared.color.warning.opacity(0.12))
             )
         }
+    }
+    
+    private func isProxyPidIncluded(items: [RequestDataUIModel]) -> Bool {
+        print("UI PID in for \(items)")
+        for item in items {
+            switch item {
+            case .requestDataSection(let section):
+                if section.id == "proxy" {
+                    return true
+                }
+            default:
+                break
+            }
+        
+        }
+        return false
     }
 }

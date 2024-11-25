@@ -35,6 +35,7 @@ import logic_core
 @testable import logic_test
 @testable import feature_test
 @testable import feature_common
+@testable import EudiWalletKit
 
 final class TestStartupInteractor: EudiTest {
   
@@ -60,7 +61,7 @@ final class TestStartupInteractor: EudiTest {
   func testInitialize_WhenPinIsNotSet_ThenReturnQuickPinAppRoute() async throws {
     // Given
     let expectedConfig = QuickPinUiConfig(flow: .set)
-    stubFetchDocuments(with: [Constants.euPidModel, Constants.isoMdlModel])
+    stubFetchDocuments(with: [MdocDocument(mdoc: Constants.euPidModel), MdocDocument(mdoc: Constants.isoMdlModel)])
     stubHasPin(with: false)
     // When
     let route = await interactor.initialize(with: .zero)
@@ -80,7 +81,7 @@ final class TestStartupInteractor: EudiTest {
   func testInitialize_WhenPinIsSetAndHasIssuedDocuments_ThenReturnBiometricsAppRouteWithNavigationSuccessDashboard() async throws {
     // Given
     let expectedConfig = biometryConfig(with: true)
-    stubFetchDocuments(with: [Constants.euPidModel, Constants.isoMdlModel])
+    stubFetchDocuments(with: [MdocDocument(mdoc: Constants.euPidModel), MdocDocument(mdoc: Constants.isoMdlModel)])
     stubHasPin(with: true)
     // When
     let route = await interactor.initialize(with: .zero)
@@ -115,7 +116,7 @@ final class TestStartupInteractor: EudiTest {
 }
 
 private extension TestStartupInteractor {
-  func stubFetchDocuments(with documents: [MdocDecodable]) {
+  func stubFetchDocuments(with documents: [WalletDocument]) {
     stub(walletKitController) { mock in
       when(mock.loadDocuments()).thenDoNothing()
       when(mock.fetchDocuments()).thenReturn(documents)

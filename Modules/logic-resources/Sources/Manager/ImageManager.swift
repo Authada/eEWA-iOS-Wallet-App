@@ -67,6 +67,11 @@ public protocol ImageManagerProtocol {
     var confirmId: Image  { get }
     var identID: Image  { get }
     var lock: Image  { get }
+    var icDocument: Image { get }
+    var ic_eaa_mdl: Image { get }
+    var ic_eaa_email: Image { get }
+    var ic_eaa_msisdn: Image { get }
+    var ic_eaa_generic: Image { get }
 }
 
 final class ImageManager: ImageManagerProtocol {
@@ -108,6 +113,11 @@ final class ImageManager: ImageManagerProtocol {
         case confirmId = "id-confirm"
         case identID = "ic-id"
         case lock = "ic-lock"
+        case icDocument = "ic-document"
+        case ic_eaa_mdl = "ic-eaa-mdl"
+        case ic_eaa_email = "ic-eaa-email"
+        case ic_eaa_msisdn = "ic-eaa-msisdn"
+        case ic_eaa_generic = "ic-eaa-generic"
     }
     
     // MARK: - Properties
@@ -223,5 +233,21 @@ final class ImageManager: ImageManagerProtocol {
     }
     var lock: Image {
         Image(ImageEnum.lock.rawValue, bundle: bundle)
+    }
+    var icDocument: Image {
+        Image(ImageEnum.icDocument.rawValue, bundle: bundle)
+    }
+    
+    var ic_eaa_mdl: Image {
+        Image(ImageEnum.ic_eaa_mdl.rawValue, bundle: bundle)
+    }
+    var ic_eaa_email: Image {
+        Image(ImageEnum.ic_eaa_email.rawValue, bundle: bundle)
+    }
+    var ic_eaa_msisdn: Image {
+        Image(ImageEnum.ic_eaa_msisdn.rawValue, bundle: bundle)
+    }
+    var ic_eaa_generic: Image {
+        Image(ImageEnum.ic_eaa_generic.rawValue, bundle: bundle)
     }
 }

@@ -157,16 +157,22 @@ public struct RequestDataSection: Identifiable, Equatable {
   public var id: String
   public let type: `Type`
   public let title: String
+  public var isSelected: Bool
 
   public init(
     id: String = UUID().uuidString,
     type: `Type`,
-    title: String
+    title: String,
+    isSelected: Bool = false
   ) {
     self.id = id
     self.type = type
     self.title = title
+    self.isSelected = isSelected
   }
+    public mutating func setSelected(_ isSelected: Bool) {
+      self.isSelected = isSelected
+    }
 }
 
 public struct RequestDataVerification: Identifiable, Equatable {
@@ -195,7 +201,22 @@ public extension RequestDataSection {
     case id
     case mdl
     case age
+    case email
     case custom(String)
+      
+      public var icon: Image {
+          
+          switch self {
+          case .id:
+              return Theme.shared.image.ident
+          case .mdl:
+              return Theme.shared.image.ic_eaa_mdl
+          case .email:
+              return Theme.shared.image.ic_eaa_email
+          default:
+              return Theme.shared.image.ic_eaa_generic
+          }
+      }
 
     public init(docType: DocumentTypeIdentifier) {
       switch docType {
@@ -205,8 +226,11 @@ public extension RequestDataSection {
         self = .mdl
       case .AGE:
         self = .age
+      case .EMAIL:
+        self = .email
       case .GENERIC(docType: let docType):
         self = .custom(docType)
+      
       }
     }
   }

@@ -58,7 +58,6 @@ public struct FloatingActionButtonBarView: View {
     public var body: some View {
         HStack(spacing: SPACING_MEDIUM) {
             
-#if DEBUG
             FloatingActionButtonView(
                 title: .addDoc,
                 textColor: ColorHelper.textColor_inverted,
@@ -68,7 +67,6 @@ public struct FloatingActionButtonBarView: View {
                 isLoading: isLoading,
                 action: addAction
             )
-#endif
             
             FloatingActionButtonView(
                 title: .scanQrCode,

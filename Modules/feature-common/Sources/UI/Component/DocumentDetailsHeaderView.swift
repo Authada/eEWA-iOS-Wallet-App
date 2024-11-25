@@ -121,12 +121,12 @@ extension DocumentDetailsHeaderView {
 
         Text(documentName)
           .typography(Theme.shared.font.headlineSmall)
-          .foregroundColor(Theme.shared.color.black)
+          .foregroundColor(ColorHelper.textColor)
           .shimmer(isLoading: isLoading)
 
         Text(holdersName)
           .typography(Theme.shared.font.bodyLarge)
-          .foregroundColor(Theme.shared.color.black)
+          .foregroundColor(ColorHelper.textColor)
           .padding(.bottom)
           .shimmer(isLoading: isLoading)
 
@@ -134,31 +134,15 @@ extension DocumentDetailsHeaderView {
           userIcon
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(height: 120)
-            .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
-
-          if !isLoading {
-            ZStack(alignment: .topTrailing) {
-              Theme.shared.image.idStroke
-                .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
-              if hasDocumentExpired {
-                Theme.shared.image.warning
-                  .renderingMode(.template)
-                  .foregroundColor(Theme.shared.color.warning)
-                  .padding(2)
-                  .background(Theme.shared.color.secondary)
-                  .clipShape(Circle())
-              }
-            }
-            .padding(.leading, -40)
-          }
+            .frame(width: 100)
+            .roundedCorner(Theme.shared.shape.extraSmall, corners: .allCorners)
           Spacer()
         }
         .shimmer(isLoading: isLoading)
       }
       .padding(SPACING_MEDIUM)
       .frame(maxWidth: .infinity)
-      .background(Theme.shared.color.secondary)
+      .background(ColorHelper.background)
       .roundedCorner(Theme.shared.shape.small, corners: [.bottomLeft, .bottomRight])
     }
   }

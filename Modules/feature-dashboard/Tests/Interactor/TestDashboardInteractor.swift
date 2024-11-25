@@ -35,6 +35,7 @@ import logic_core
 @testable import feature_dashboard
 @testable import logic_test
 @testable import feature_test
+@testable import EudiWalletKit
 
 final class TestDashboardInteractor: EudiTest {
   
@@ -116,6 +117,7 @@ final class TestDashboardInteractor: EudiTest {
         value: .init(
           id: Constants.euPidModelId,
           type: DocumentTypeIdentifier.PID.rawValue,
+          docFormat: nil,
           title: "National ID",
           createdAt: Constants.documentCreatedAt,
           expiresAt: "30 Mar 2050",
@@ -127,6 +129,7 @@ final class TestDashboardInteractor: EudiTest {
         value: .init(
           id: Constants.isoMdlModelId,
           type: DocumentTypeIdentifier.MDL.rawValue,
+          docFormat: .cbor,
           title: "Driving License",
           createdAt: Constants.documentCreatedAt,
           expiresAt: "30 Mar 2050",
@@ -141,9 +144,9 @@ final class TestDashboardInteractor: EudiTest {
         image: Theme.shared.image.user
       )
     )
-    stubFetchDocuments(with: [Constants.euPidModel, Constants.isoMdlModel])
-    stubFetchDocumentsWithExclusion(with: [Constants.isoMdlModel])
-    stubFetchMainPidDocument(with: Constants.euPidModel)
+      stubFetchDocuments(with: [MdocDocument(mdoc:Constants.euPidModel), MdocDocument(mdoc:Constants.isoMdlModel)])
+      stubFetchDocumentsWithExclusion(with: [MdocDocument(mdoc:Constants.isoMdlModel)])
+    stubFetchMainPidDocument(with: MdocDocument(mdoc:Constants.euPidModel))
     // When
     let state = await interactor.fetchDashboard()
     // Then
@@ -170,19 +173,19 @@ private extension TestDashboardInteractor {
     XCTAssertEqual(bleAvailability, status)
   }
   
-  func stubFetchDocuments(with documents: [MdocDecodable]) {
+  func stubFetchDocuments(with documents: [WalletDocument]) {
     stub(walletKitController) { mock in
       when(mock.fetchDocuments()).thenReturn(documents)
     }
   }
   
-  func stubFetchDocumentsWithExclusion(with documents: [MdocDecodable]) {
+  func stubFetchDocumentsWithExclusion(with documents: [WalletDocument]) {
     stub(walletKitController) { mock in
       when(mock.fetchDocuments(excluded: any())).thenReturn(documents)
     }
   }
   
-  func stubFetchMainPidDocument(with document: MdocDecodable?) {
+  func stubFetchMainPidDocument(with document: WalletDocument?) {
     stub(walletKitController) { mock in
       when(mock.fetchMainPidDocument()).thenReturn(document)
     }

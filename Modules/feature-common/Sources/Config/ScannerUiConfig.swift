@@ -33,49 +33,56 @@ import logic_ui
 import logic_resources
 
 public struct ScannerUiConfig: UIConfigType, Equatable {
-
-  public let flow: Flow
-
-  public var log: String {
-    return "flow: \(flow.rawValue)"
-  }
-
-  public init(flow: Flow) {
-    self.flow = flow
-  }
+    
+    public let flow: Flow
+    
+    public var log: String {
+        return "flow: \(flow.rawValue)"
+    }
+    
+    public init(flow: Flow) {
+        self.flow = flow
+    }
 }
 
 public extension ScannerUiConfig {
-  enum Flow: Equatable {
-
-    case presentation
-    case issuing(IssuanceFlowUiConfig)
-
-    var title: LocalizableString.Key {
-      return switch self {
-      case .presentation:
-          .scannerQrTitle
-      case .issuing:
-          .scannerQrTitle
-      }
+    enum Flow: Equatable {
+        
+        case presentation
+        case issuing(IssuanceFlowUiConfig)
+        case unified(IssuanceFlowUiConfig)
+        
+        var title: LocalizableString.Key {
+            return switch self {
+            case .presentation:
+                    .scannerQrTitle
+            case .issuing:
+                    .scannerQrTitle
+            case .unified:
+                    .scannerQrTitle
+            }
+        }
+        
+        var caption: LocalizableString.Key {
+            return switch self {
+            case .presentation:
+                    .scannerQrCaption
+            case .issuing:
+                    .scannerQrCaption
+            case .unified:
+                    .scannerQrCaption
+            }
+        }
+        
+        var rawValue: String {
+            return switch self {
+            case .presentation:
+                "presentation"
+            case .issuing:
+                "issuing"
+            case .unified:
+                "unified"
+            }
+        }
     }
-
-    var caption: LocalizableString.Key {
-      return switch self {
-      case .presentation:
-          .scannerQrCaption
-      case .issuing:
-          .scannerQrCaption
-      }
-    }
-
-    var rawValue: String {
-      return switch self {
-      case .presentation:
-        "presentation"
-      case .issuing:
-        "issuing"
-      }
-    }
-  }
 }

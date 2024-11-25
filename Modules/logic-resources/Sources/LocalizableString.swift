@@ -126,6 +126,8 @@ public final class LocalizableString: LocalizableStringType {
             bundle.localizedString(forKey: "mdl")
         case .ageVerification:
             bundle.localizedString(forKey: "age_verification")
+        case .verifiedEmail:
+            bundle.localizedString(forKey: "verified_email")
         case .addDocumentTitle:
             bundle.localizedString(forKey: "add_document_title")
         case .addDocumentSubtitle:
@@ -286,6 +288,8 @@ public final class LocalizableString: LocalizableStringType {
             bundle.localizedString(forKey: "more_about_this_function")
         case .openRPWebdemo:
             bundle.localizedString(forKey: "open_rp_webdemo")
+        case .openIssWebdemo:
+            bundle.localizedString(forKey: "open_iss_webdemo")
         case .selectData:
             bundle.localizedString(forKey: "select_data")
         case .presentationDataCaption:
@@ -318,7 +322,14 @@ public final class LocalizableString: LocalizableStringType {
             bundle.localizedString(forKey: "onboarding_title_two")
         case .onboardingNextBtn:
             bundle.localizedString(forKey: "onboarding_next_btn")
-            
+        case .issuanceCodeTitle(let args):
+            bundle.localizedStringWithArguments(forKey: "issuance_code_title", arguments: args)
+        case .issuanceCodeCaption(let args):
+            bundle.localizedStringWithArguments(forKey: "issuance_code_caption", arguments: args)
+        case .transactionCodeFormatError(let args):
+          bundle.localizedStringWithArguments(forKey: "transaction_code_format_error", arguments: args)
+        case .issuerValidated:
+            bundle.localizedString(forKey: "issuer_validated")
         }
         
     }
@@ -368,6 +379,7 @@ public extension LocalizableString {
         case pid
         case mdl
         case ageVerification
+        case verifiedEmail
         case addDocumentTitle
         case addDocumentSubtitle
         case proximityConnectivityTitle
@@ -448,6 +460,7 @@ public extension LocalizableString {
         case identify
         case moreAboutThisFunction
         case openRPWebdemo
+        case openIssWebdemo
         case selectData
         case presentationDataCaption
         case empty
@@ -464,6 +477,10 @@ public extension LocalizableString {
         case onboardingtitleOne
         case onboardingtitleTwo
         case onboardingNextBtn
+        case issuanceCodeTitle([String])
+        case issuanceCodeCaption([String])
+        case transactionCodeFormatError([String])
+        case issuerValidated
     }
 }
 

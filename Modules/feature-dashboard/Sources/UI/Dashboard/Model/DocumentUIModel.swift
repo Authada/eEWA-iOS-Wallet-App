@@ -32,6 +32,7 @@ import Foundation
 import logic_core
 import logic_resources
 import logic_business
+import SwiftUI
 
 public struct DocumentUIModel: Identifiable, Equatable {
 
@@ -54,18 +55,33 @@ public extension DocumentUIModel {
     public var id: String
 
     public let type: String
+    public let docFormat: DataFormat?
     public let title: String
     public var createdAt: Date
     public let expiresAt: String?
     public let hasExpired: Bool
+      
+      public var icon: Image {
+          let docType = DocumentTypeIdentifier(rawValue: type)
+          switch docType {
+          case .PID:
+              return Theme.shared.image.ident
+          case .MDL:
+              return Theme.shared.image.ic_eaa_mdl
+          case .EMAIL:
+              return Theme.shared.image.ic_eaa_email
+          default:
+              return Theme.shared.image.ic_eaa_generic
+          }
+      }
   }
-  
   static func proxy()-> DocumentUIModel {
       .init(
-        id: DocumentManager.proxyTag,
+        id: ProxyPidDocument.proxyTagID,
         value: .init(
-          id: DocumentManager.proxyTag,
-          type: DocumentManager.euPidDocType,
+          id: ProxyPidDocument.proxyTagID,
+          type: DocumentManager.euPidDocTypeMdoc,
+          docFormat: nil,
           title: LocalizableString.shared.get(with: .identify),
           createdAt: Date(),
           expiresAt: LocalizableString.shared.get(with: .moreAboutThisFunction),
@@ -80,6 +96,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Digital ID",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -91,6 +108,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "EUDI Conference",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -102,6 +120,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Passport",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -113,6 +132,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Document 1",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -124,6 +144,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Document 2",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -135,6 +156,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Document 3",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -146,6 +168,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Document 4",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -157,6 +180,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Document 5",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -168,6 +192,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Document 6",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -179,6 +204,7 @@ public extension DocumentUIModel {
         value: .init(
           id: UUID().uuidString,
           type: UUID().uuidString,
+          docFormat: nil,
           title: "Passport",
           createdAt: Date(),
           expiresAt: "22/01/2025",
@@ -189,7 +215,7 @@ public extension DocumentUIModel {
   }
 }
 
-extension Array where Element == MdocDecodable {
+extension Array where Element == WalletDocument {
   func transformToDocumentUi() -> [DocumentUIModel] {
     self.map { item in
         if item.id == "proxy" {
@@ -199,8 +225,9 @@ extension Array where Element == MdocDecodable {
         id: UUID().uuidString,
         value: .init(
           id: item.id,
-          type: item.docType,
-          title: DocumentTypeIdentifier(rawValue: item.docType).localizedTitle,
+          type: item.docTypes.first ?? "",
+          docFormat: item.docFormat,
+          title: DocumentTypeIdentifier(rawValue: item.docTypes.first ?? "").localizedTitle,
           createdAt: item.createdAt,
           expiresAt: item.getExpiryDate(
             parser: {

@@ -56,6 +56,7 @@ public extension DocumentDetailsUIModel {
     public let id: String
     public let title: String
     public let value: Value
+    public let muted: Bool
   }
 
   static func mock() -> DocumentDetailsUIModel {
@@ -72,19 +73,23 @@ public extension DocumentDetailsUIModel {
           .init(
             id: UUID().uuidString,
             title: "ID no",
-            value: .string("AB12356")),
+            value: .string("AB12356"),
+            muted: false),
           .init(
             id: UUID().uuidString,
             title: "Nationality",
-            value: .string("Hellenic")),
+            value: .string("Hellenic"),
+            muted: false),
           .init(
             id: UUID().uuidString,
             title: "Place of birth",
-            value: .string("21 Oct 1994")),
+            value: .string("21 Oct 1994"),
+            muted: false),
           .init(
             id: UUID().uuidString,
             title: "Height",
-            value: .string("1,82"))
+            value: .string("1,82"),
+            muted: false)
         ]
       +
       Array(
@@ -92,21 +97,113 @@ public extension DocumentDetailsUIModel {
         createElement: DocumentField(
           id: UUID().uuidString,
           title: "Placeholder Field Title".padded(padLength: 5),
-          value: .string("Placeholder Field Value".padded(padLength: 10))
+          value: .string("Placeholder Field Value".padded(padLength: 10)), muted: false
         )
       )
     )
   }
 }
 
-extension MdocDecodable {
-  func transformToDocumentDetailsUi() -> DocumentDetailsUIModel {
+extension WalletDocument {
+    func transformToDocumentDetailsUi() -> DocumentDetailsUIModel {
 
-    let documentFields: [DocumentDetailsUIModel.DocumentField] =
-    flattenValues(
-      input: displayStrings
-        .compactMap({$0})
-        .sorted(by: {$0.order < $1.order})
+      let documentFields: [DocumentDetailsUIModel.DocumentField] =
+      flattenValues(
+        input: displayStrings
+          .compactMap({$0})
+          .sorted(by: {$0.order < $1.order})
+          .decodeGender()
+          .mapTrueFalseToLocalizable()
+          .parseDates(
+            parser: {
+              Locale.current.localizedDateTime(
+                date: $0,
+                uiFormatter: "dd MMM yyyy"
+              )
+            }
+          ),
+        images: displayImages
+      )
+
+      var bearerName: String {
+        guard let fullName = getBearersName() else {
+          return ""
+        }
+        return "\(fullName.first) \(fullName.last)"
+      }
+
+      let identifier = DocumentTypeIdentifier(rawValue: docTypes.first ?? "")
+
+      return .init(
+        id: id,
+        type: identifier,
+        documentName: identifier.localizedTitle,
+        holdersName: bearerName,
+        holdersImage: getPortrait() ?? identifier.icon,
+        createdAt: createdAt,
+        hasExpired: hasExpired(
+          parser: {
+            Locale.current.parseDate(
+              date: $0
+            )
+          }
+        ),
+        documentFields: documentFields
+      )
+    }
+    
+    private func flattenValues(input: [NameValue], images: [NameImage]) -> [DocumentDetailsUIModel.DocumentField] {
+      input.reduce(into: []) { partialResult, nameValue in
+        let uuid = UUID().uuidString
+        let title: String = LocalizableString.shared.get(with: .dynamic(key: nameValue.name))
+        let mutedfields = ["cnf","iss","vct","vct#integrity"]
+        let muted = mutedfields.contains(nameValue.name)
+        if let image = images.first(where: {$0.name == nameValue.name})?.image {
+
+          guard nameValue.name != "portrait" else {
+            partialResult.append(
+              .init(
+                id: uuid,
+                title: title,
+                value: .string(LocalizableString.shared.get(with: .shownAbove)),
+                muted: muted
+              )
+            )
+            return
+          }
+
+          partialResult.append(
+            .init(
+              id: uuid,
+              title: title,
+              value: .image(image),
+              muted: muted
+            )
+          )
+        } else if let nested = nameValue.children {
+          partialResult.append(
+            .init(
+              id: uuid,
+              title: title,
+              value: .string(flattenNested(parent: nameValue, nested: nested).value),
+              muted: muted
+            )
+          )
+        } else {
+          partialResult.append(
+            .init(
+              id: uuid,
+              title: title,
+              value: .string(nameValue.value),
+              muted: muted
+            )
+          )
+        }
+      }
+    }
+    
+    private func flattenNested(parent: NameValue, nested: [NameValue]) -> NameValue {
+      let flat = nested
         .decodeGender()
         .mapTrueFalseToLocalizable()
         .parseDates(
@@ -116,109 +213,23 @@ extension MdocDecodable {
               uiFormatter: "dd MMM yyyy"
             )
           }
-        ),
-      images: displayImages
-    )
-
-    var bearerName: String {
-      guard let fullName = getBearersName() else {
-        return ""
-      }
-      return "\(fullName.first) \(fullName.last)"
-    }
-
-    let identifier = DocumentTypeIdentifier(rawValue: docType)
-
-    return .init(
-      id: id,
-      type: identifier,
-      documentName: identifier.localizedTitle,
-      holdersName: bearerName,
-      holdersImage: getPortrait() ?? Theme.shared.image.user,
-      createdAt: createdAt,
-      hasExpired: hasExpired(
-        parser: {
-          Locale.current.parseDate(
-            date: $0
-          )
-        }
-      ),
-      documentFields: documentFields
-    )
-  }
-
-  private func flattenValues(input: [NameValue], images: [NameImage]) -> [DocumentDetailsUIModel.DocumentField] {
-    input.reduce(into: []) { partialResult, nameValue in
-      let uuid = UUID().uuidString
-      let title: String = LocalizableString.shared.get(with: .dynamic(key: nameValue.name))
-      if let image = images.first(where: {$0.name == nameValue.name})?.image {
-
-        guard nameValue.name != "portrait" else {
-          partialResult.append(
-            .init(
-              id: uuid,
-              title: title,
-              value: .string(LocalizableString.shared.get(with: .shownAbove))
-            )
-          )
-          return
-        }
-
-        partialResult.append(
-          .init(
-            id: uuid,
-            title: title,
-            value: .image(image)
-          )
         )
-      } else if let nested = nameValue.children {
-        partialResult.append(
-          .init(
-            id: uuid,
-            title: title,
-            value: .string(flattenNested(parent: nameValue, nested: nested).value)
-          )
-        )
-      } else {
-        partialResult.append(
-          .init(
-            id: uuid,
-            title: title,
-            value: .string(nameValue.value)
-          )
-        )
-      }
-    }
-  }
-
-  private func flattenNested(parent: NameValue, nested: [NameValue]) -> NameValue {
-    let flat = nested
-      .decodeGender()
-      .mapTrueFalseToLocalizable()
-      .parseDates(
-        parser: {
-          Locale.current.localizedDateTime(
-            date: $0,
-            uiFormatter: "dd MMM yyyy"
-          )
+        .reduce(into: "") { partialResult, nameValue in
+          if let nestedChildren = nameValue.children {
+            let deepNested = flattenNested(parent: nameValue, nested: nestedChildren.sorted(by: {$0.order < $1.order}))
+            partialResult += "\(deepNested.value)\n"
+          } else {
+            partialResult += "\(LocalizableString.shared.get(with: .dynamic(key: nameValue.name))): \(nameValue.value)\n"
+          }
         }
+        .dropLast()
+
+      return .init(
+        name: parent.name,
+        value: String(flat),
+        ns: parent.ns,
+        order: parent.order,
+        children: nil
       )
-      .reduce(into: "") { partialResult, nameValue in
-        if let nestedChildren = nameValue.children {
-          let deepNested = flattenNested(parent: nameValue, nested: nestedChildren.sorted(by: {$0.order < $1.order}))
-          partialResult += "\(deepNested.value)\n"
-        } else {
-          partialResult += "\(LocalizableString.shared.get(with: .dynamic(key: nameValue.name))): \(nameValue.value)\n"
-        }
-      }
-      .dropLast()
-
-    return .init(
-      name: parent.name,
-      value: String(flat),
-      ns: parent.ns,
-      order: parent.order,
-      children: nil
-    )
-  }
+    }
 }

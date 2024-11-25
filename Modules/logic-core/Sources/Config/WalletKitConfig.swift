@@ -31,85 +31,96 @@
 import Foundation
 
 struct VciConfig {
-  public let issuerUrl: String
-  public let clientId: String
-  public let redirectUri: String
+    public let issuerUrl: String
+    public let clientId: String
+    public let redirectUri: String
+    public let issuerCertChainData: [Data]
 }
 
 struct WalletAttastationConfig {
-  public let hostUrl: String
-  public let clientId: String
+    public let hostUrl: String
+    public let clientId: String
 }
 
 struct VerifierConfig {
-  public let apiUri: String
-  public let legalName: String
+    public let apiUri: String
+    public let legalName: String
 }
 
 struct ProximityConfig {
-  public let trustedCerts: [Data]
+    public let trustedCerts: [Data]
 }
 
 protocol WalletKitConfig {
-
-  /**
-   * Verifier API URI.
-   */
-  var verifierConfig: VerifierConfig { get }
-
-  /**
-   * VCI Configuration
-   */
-  var vciConfig: VciConfig { get }
     
-  /**
-   * Wallet Attastation Configuration
-   */
-  var walletAttestationConfig: WalletAttastationConfig { get }
-
-  /**
-   * Proximity Configuration
-   */
-  var proximityConfig: ProximityConfig { get }
-
-  /**
-   * User authentication required accessing core's secure storage
-   */
-  var userAuthenticationRequired: Bool { get }
+    /**
+     * Verifier API URI.
+     */
+    var verifierConfig: VerifierConfig { get }
+    
+    /**
+     * VCI Configuration
+     */
+    var vciConfig: VciConfig { get }
+    
+    /**
+     * Wallet Attastation Configuration
+     */
+    var walletAttestationConfig: WalletAttastationConfig { get }
+    
+    /**
+     * Proximity Configuration
+     */
+    var proximityConfig: ProximityConfig { get }
+    
+    /**
+     * User authentication required accessing core's secure storage
+     */
+    var userAuthenticationRequired: Bool { get }
 }
 
 struct WalletKitConfigImpl: WalletKitConfig {
-
-  var userAuthenticationRequired: Bool {
-    getBundleValue(key: "Core User Auth").toBool()
-  }
-
-  var verifierConfig: VerifierConfig {
-    .init(
-      apiUri: getBundleValue(key: "Verifier API"),
-      legalName: getBundleValue(key: "Verifier Legal Name")
-    )
-  }
-
-  var vciConfig: VciConfig {
-    .init(
-      issuerUrl: getBundleValue(key: "Vci Issuer URL"),
-      clientId: getBundleValue(key: "Vci Client Id"),
-      redirectUri: getBundleValue(key: "Vci Redirect Uri")
-    )
-  }
     
-  var walletAttestationConfig: WalletAttastationConfig {
-    .init(
-        hostUrl: getBundleValue(key: "Wallet Host URL"),
-        clientId: getBundleValue(key: "Wallet Att Client Id")
-      )
+    var userAuthenticationRequired: Bool {
+        getBundleValue(key: "Core User Auth").toBool()
     }
-
-  var proximityConfig: ProximityConfig {
-    guard let cert = Data(name: "eudi_pid_issuer_ut", ext: "der") else {
-      return .init(trustedCerts: [])
+    
+    var verifierConfig: VerifierConfig {
+        
+        .init(
+            apiUri: getBundleValue(key: "Verifier API"),
+            legalName: getBundleValue(key: "Verifier Legal Name")
+        )
     }
-    return .init(trustedCerts: [cert])
-  }
+    
+    var vciConfig: VciConfig {
+        guard let certificateData = Data(name: "issuer_trustlist_ca", ext: "cer") else {
+            return .init(
+                issuerUrl: getBundleValue(key: "Vci Issuer URL"),
+                clientId: getBundleValue(key: "Vci Client Id"),
+                redirectUri: getBundleValue(key: "Vci Redirect Uri"),
+                issuerCertChainData: []
+            )
+        }
+        return .init(
+            issuerUrl: getBundleValue(key: "Vci Issuer URL"),
+            clientId: getBundleValue(key: "Vci Client Id"),
+            redirectUri: getBundleValue(key: "Vci Redirect Uri"),
+            issuerCertChainData: [certificateData]
+        )
+    }
+    
+    var walletAttestationConfig: WalletAttastationConfig {
+        .init(
+            hostUrl: getBundleValue(key: "Wallet Host URL"),
+            clientId: getBundleValue(key: "Wallet Att Client Id")
+        )
+    }
+    
+    var proximityConfig: ProximityConfig {
+        guard let cert = Data(name: "eudi_pid_issuer_ut", ext: "der") else {
+            return .init(trustedCerts: [])
+        }
+        return .init(trustedCerts: [cert])
+    }
 }

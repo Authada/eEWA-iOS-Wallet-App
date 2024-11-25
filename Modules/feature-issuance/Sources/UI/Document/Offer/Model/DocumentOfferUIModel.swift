@@ -33,106 +33,142 @@ import logic_core
 import logic_business
 import logic_resources
 
-public struct DocumentOfferUIModel: Identifiable {
-
-  @EquatableNoop
-  public var id: String
-
-  public let issuerName: String
-  public let uiOffers: [UIOffer]
-  public let docOffers: [OfferedDocModel]
-
-  public init(
-    id: String = UUID().uuidString,
-    issuerName: String,
-    uiOffers: [UIOffer],
-    docOffers: [OfferedDocModel]
-  ) {
-    self.id = id
-    self.issuerName = issuerName
-    self.uiOffers = uiOffers
-    self.docOffers = docOffers
-  }
-}
-
-public extension DocumentOfferUIModel {
-  struct UIOffer: Identifiable {
-
+public struct DocumentOfferUIModel: Sendable {
+    
     @EquatableNoop
     public var id: String
-
-    public let documentName: String
-    public let documentType: DocumentTypeIdentifier
-
+    
+    public let issuerName: String
+    public let txCode: TxCode?
+    public let uiOffers: [UIOffer]
+    public let docOffers: [OfferedDocModel]
+    public let isValidated: Bool
+    
     public init(
-      id: String = UUID().uuidString,
-      documentName: String,
-      documentType: DocumentTypeIdentifier
+        id: String = UUID().uuidString,
+        issuerName: String,
+        txCode: TxCode?,
+        uiOffers: [UIOffer],
+        docOffers: [OfferedDocModel],
+        isValidated: Bool
     ) {
-      self.id = id
-      self.documentName = documentName
-      self.documentType = documentType
+        self.id = id
+        self.issuerName = issuerName
+        self.txCode = txCode
+        self.uiOffers = uiOffers
+        self.docOffers = docOffers
+        self.isValidated = isValidated
+    }
+}
+
+public extension DocumentOfferUIModel {
+    struct UIOffer: Identifiable, Sendable {
+        
+        @EquatableNoop
+        public var id: String
+        
+        public let documentName: String
+        public let documentType: DocumentTypeIdentifier
+        
+        public init(
+            id: String = UUID().uuidString,
+            documentName: String,
+            documentType: DocumentTypeIdentifier
+        ) {
+            self.id = id
+            self.documentName = documentName
+            self.documentType = documentType
+        }
+    }
+}
+
+public extension DocumentOfferUIModel {
+  struct TxCode: Sendable {
+
+    let isRequired: Bool
+    let codeLenght: Int
+
+    public init(isRequired: Bool, codeLenght: Int) {
+      self.isRequired = isRequired
+      self.codeLenght = codeLenght
     }
   }
 }
 
 public extension DocumentOfferUIModel {
-  static func mock() -> DocumentOfferUIModel {
-    return .init(
-      id: UUID().uuidString,
-      issuerName: LocalizableString.shared.get(with: .unknownIssuer),
-      uiOffers: [
-        .init(
-          id: UUID().uuidString,
-          documentName: "Document Name",
-          documentType: .GENERIC(docType: "")
-        ),
-        .init(
-          id: UUID().uuidString,
-          documentName: "Document Name",
-          documentType: .GENERIC(docType: "")
-        ),
-        .init(
-          id: UUID().uuidString,
-          documentName: "Document Name",
-          documentType: .GENERIC(docType: "")
-        ),
-        .init(
-          id: UUID().uuidString,
-          documentName: "Document Name",
-          documentType: .GENERIC(docType: "")
-        ),
-        .init(
-          id: UUID().uuidString,
-          documentName: "Document Name",
-          documentType: .GENERIC(docType: "")
+    static func mock() -> DocumentOfferUIModel {
+        return .init(
+            id: UUID().uuidString,
+            issuerName: LocalizableString.shared.get(with: .unknownIssuer),
+            txCode: nil,
+            uiOffers: [
+                .init(
+                    id: UUID().uuidString,
+                    documentName: "Document Name",
+                    documentType: .GENERIC(docType: "")
+                ),
+                .init(
+                    id: UUID().uuidString,
+                    documentName: "Document Name",
+                    documentType: .GENERIC(docType: "")
+                ),
+                .init(
+                    id: UUID().uuidString,
+                    documentName: "Document Name",
+                    documentType: .GENERIC(docType: "")
+                ),
+                .init(
+                    id: UUID().uuidString,
+                    documentName: "Document Name",
+                    documentType: .GENERIC(docType: "")
+                ),
+                .init(
+                    id: UUID().uuidString,
+                    documentName: "Document Name",
+                    documentType: .GENERIC(docType: "")
+                )
+            ],
+            docOffers: [],
+            isValidated: false
         )
-      ],
-      docOffers: []
-    )
-  }
+    }
 }
 
-extension Array where Element == OfferedDocModel {
-  func transformToDocumentOfferUi() -> DocumentOfferUIModel {
-
-    var issuer: String = LocalizableString.shared.get(with: .unknownIssuer)
-    var offers: [DocumentOfferUIModel.UIOffer] = []
-
-    self.forEach { doc in
-      issuer = doc.issuerName
-      offers.append(
-        .init(
-          documentName: doc.displayName,
-          documentType: DocumentTypeIdentifier(rawValue: doc.docType)
+extension OfferedIssuanceModel {
+    func transformToDocumentOfferUi() -> DocumentOfferUIModel {
+        return self.docModels.transformToDocumentOfferUi(
+            codeRequired: self.isTxCodeRequired,
+            codeLength: self.txCodeSpec?.length ?? 0,
+            isValidated: self.isValidated
         )
-      )
     }
+}
 
-    return .init(
-      issuerName: issuer,
-      uiOffers: offers,
-      docOffers: self
-    )
-  }
+private extension Array where Element == OfferedDocModel {
+    func transformToDocumentOfferUi(
+        codeRequired: Bool,
+        codeLength: Int,
+        isValidated: Bool
+    ) -> DocumentOfferUIModel {
+        var issuer: String = LocalizableString.shared.get(with: .unknownIssuer)
+        var offers: [DocumentOfferUIModel.UIOffer] = []
+        
+        self.forEach { doc in
+            issuer = doc.issuerName
+            offers.append(
+                .init(
+                    documentName: doc.displayName,
+                    documentType: DocumentTypeIdentifier(rawValue: doc.docType)
+                )
+            )
+        }
+        
+        return .init(
+            issuerName: issuer,
+            txCode: codeRequired ? .init(isRequired: codeRequired, codeLenght: codeLength): nil,
+            uiOffers: offers,
+            docOffers: self,
+            isValidated: isValidated
+        )
+    }
 }

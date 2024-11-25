@@ -43,21 +43,21 @@ public protocol WalletKitController {
   func startSameDevicePresentation(deepLink: URLComponents) async -> PresentationSessionCoordinator
   func startCrossDevicePresentation(urlString: String) async -> PresentationSessionCoordinator
   func stopPresentation()
-  func fetchDocuments() -> [MdocDecodable]
-  func fetchDocuments(with type: DocumentTypeIdentifier) -> [MdocDecodable]
-  func fetchDocuments(excluded: [DocumentTypeIdentifier]) -> [MdocDecodable]
-  func fetchMainPidDocument() -> MdocDecodable?
-  func fetchDocument(with id: String) -> MdocDecodable?
+  func fetchDocuments() -> [WalletDocument]
+  func fetchDocuments(with type: DocumentTypeIdentifier) -> [WalletDocument]
+  func fetchDocuments(excluded: [DocumentTypeIdentifier]) -> [WalletDocument]
+  func fetchMainPidDocument() -> WalletDocument?
+  func fetchDocument(with id: String) -> WalletDocument?
   func loadSampleData(dataFiles: [String]) async throws
   func clearDocuments() async throws
   func deleteDocument(with id: String) async throws
   func loadDocuments() async throws
   func issueDocument(docType: String, format: DataFormat) async throws -> WalletStorage.Document
-  func resolveOfferUrlDocTypes(uriOffer: String) async throws -> [OfferedDocModel]
+  func resolveOfferUrlDocTypes(uriOffer: String) async throws -> OfferedIssuanceModel
   func issueDocumentsByOfferUrl(
     offerUri: String,
     docTypes: [OfferedDocModel],
-    format: DataFormat
+    txCodeValue: String?
   ) async throws -> [WalletStorage.Document]
   func valueForElementIdentifier(
     for documentType: DocumentTypeIdentifier,
@@ -89,21 +89,23 @@ final class WalletKitControllerImpl: WalletKitController {
     wallet.walletAttestationHostUrl = configLogic.walletAttestationConfig.hostUrl
     wallet.walletAttestationClientId = configLogic.walletAttestationConfig.clientId
     wallet.externalURLService = ExternalAppHandler()
+    wallet.issuerCertChainData = configLogic.vciConfig.issuerCertChainData
   }
 
-  func resolveOfferUrlDocTypes(uriOffer: String) async throws -> [OfferedDocModel] {
-    return try await wallet.resolveOfferUrlDocTypes(uriOffer: uriOffer)
+  func resolveOfferUrlDocTypes(uriOffer: String) async throws -> OfferedIssuanceModel {
+      let offermodel = try await wallet.resolveOfferUrlDocTypes(uriOffer: uriOffer)
+      return offermodel
   }
 
   func issueDocumentsByOfferUrl(
     offerUri: String,
     docTypes: [OfferedDocModel],
-    format: DataFormat
+    txCodeValue: String?
   ) async throws -> [WalletStorage.Document] {
     return try await wallet.issueDocumentsByOfferUrl(
       offerUri: offerUri,
       docTypes: docTypes,
-      format: format
+      txCodeValue: txCodeValue
     )
   }
 
@@ -112,7 +114,7 @@ final class WalletKitControllerImpl: WalletKitController {
   }
 
   public func clearDocuments() async throws {
-    return try await wallet.storage.deleteDocuments()
+    return try await wallet.deleteDocuments()
   }
 
   public func deleteDocument(with id: String) async throws {
@@ -173,27 +175,34 @@ final class WalletKitControllerImpl: WalletKitController {
     self.activeCoordinator = nil
   }
 
-  public func fetchDocuments() -> [MdocDecodable] {
-    return wallet.storage.mdocModels
+  public func fetchDocuments() -> [WalletDocument] {
+    return wallet.storage.walletDocuments
   }
 
-  public func fetchDocuments(with type: DocumentTypeIdentifier) -> [MdocDecodable] {
-    return wallet.storage.mdocModels
-      .filter({ $0.docType == type.rawValue })
+  public func fetchDocuments(with type: DocumentTypeIdentifier) -> [WalletDocument] {
+    return wallet.storage.walletDocuments
+      .filter({ $0.docTypes.contains(type.rawValue) })
   }
 
-  func fetchMainPidDocument() -> MdocDecodable? {
+  func fetchMainPidDocument() -> WalletDocument? {
     return fetchDocuments(with: DocumentTypeIdentifier.PID)
       .sorted { $0.createdAt > $1.createdAt }.last
   }
 
-  func fetchDocuments(excluded: [DocumentTypeIdentifier]) -> [any MdocDecodable] {
+  func fetchDocuments(excluded: [DocumentTypeIdentifier]) -> [any WalletDocument] {
     let excludedRawValues = excluded.map { $0.rawValue }
-    return fetchDocuments().filter { !excludedRawValues.contains($0.docType) }
+    return fetchDocuments().filter {
+          for docType in $0.docTypes {
+              if excludedRawValues.contains(docType) {
+                  return false
+              }
+          }
+          return true
+      }
   }
 
-  public func fetchDocument(with id: String) -> MdocDecodable? {
-    wallet.storage.getDocumentModel(id: id)
+  public func fetchDocument(with id: String) -> WalletDocument? {
+    wallet.storage.getWalletDocument(id: id)
   }
 
   public func issueDocument(docType: String, format: DataFormat) async throws -> WalletStorage.Document {
@@ -227,7 +236,7 @@ extension WalletKitController {
         "portrait",
         "portrait_capture_date"
       ]
-    case .MDL, .AGE, .GENERIC:
+    case .MDL, .AGE, .GENERIC, .EMAIL:
       return []
     }
   }
@@ -241,14 +250,14 @@ extension WalletKitController {
   ) -> MdocValue {
 
     // Check if we have image data and early return them
-    if let imageName = wallet.storage.mdocModels
+    if let imageName = wallet.storage.walletDocuments
       .first(where: { $0.id == documentId })?.displayImages
       .first(where: { $0.name == elementIdentifier }) {
       return .image(imageName.image)
     }
 
     // Convert the Stored models to their [Key: Value] array
-    let displayStrings = wallet.storage.mdocModels
+    let displayStrings = wallet.storage.walletDocuments
       .first(where: { $0.id == documentId })?.displayStrings
       .decodeGender()
       .parseDates(parser: parser)

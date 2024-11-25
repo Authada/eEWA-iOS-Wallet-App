@@ -33,83 +33,98 @@ import logic_ui
 import logic_resources
 
 public struct DocumentSuccessView<Router: RouterHost>: View {
-
-  @ObservedObject var viewModel: DocumentSuccessViewModel<Router>
-
-  public init(
-    with router: Router,
-    and interactor: DocumentSuccessInteractor,
-    config: any UIConfigType,
-    documentIdentifier: String
-  ) {
-    self.viewModel = .init(
-      router: router,
-      interactor: interactor,
-      config: config,
-      documentIdentifier: documentIdentifier
-    )
-  }
-
-  public var body: some View {
-    ContentScreenView(errorConfig: viewModel.viewState.error) {
-
-      ContentTitleView(
-        title: viewModel.viewState.title,
-        caption: viewModel.viewState.caption,
-        titleColor: Theme.shared.color.success,
-        topSpacing: .withoutToolbar
-      )
-
-      VSpacer.large()
-
-      document
-
-      Spacer()
-
-      footer
+    
+    @ObservedObject var viewModel: DocumentSuccessViewModel<Router>
+    
+    let checkmark = Theme.shared.image.checkmarkCircleFill
+    
+    public init(
+        with router: Router,
+        and interactor: DocumentSuccessInteractor,
+        config: any UIConfigType,
+        documentIdentifier: String
+    ) {
+        self.viewModel = .init(
+            router: router,
+            interactor: interactor,
+            config: config,
+            documentIdentifier: documentIdentifier
+        )
     }
-    .task {
-      await viewModel.initialize()
-    }
-  }
-
-  private var document: some View {
-    VStack(spacing: SPACING_MEDIUM) {
-
-      HStack {
-
-        Theme.shared.image.user
-          .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
-
-        Theme.shared.image.idStroke
-          .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
-          .padding(.leading, -40)
-
-        Spacer()
-      }
-
-      HStack {
-        if let holderName = viewModel.viewState.holderName {
-          Text(holderName)
-            .typography(Theme.shared.font.bodyLarge)
-            .foregroundColor(Theme.shared.color.black)
+    
+    public var body: some View {
+        ContentScreenView(errorConfig: viewModel.viewState.error) {
+            
+            ContentTitleView(
+                title: viewModel.viewState.title,
+                caption: viewModel.viewState.caption,
+                titleColor: ColorHelper.highlight,
+                topSpacing: .withoutToolbar
+            )
+            
+            VSpacer.large()
+            
+            document
+            
+            Spacer()
+            
+            checkmark.resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: 256, maxHeight: 256)
+            
+            Spacer()
+            
+            footer
         }
-
-        Spacer()
-      }
+        .task {
+            await viewModel.initialize()
+        }
     }
-    .padding(SPACING_MEDIUM_LARGE)
-    .frame(maxWidth: .infinity)
-    .background(Theme.shared.color.secondary)
-    .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
-  }
-
-  @ViewBuilder
-  private var footer: some View {
-    WrapButtonView(
-      style: .primary,
-      title: .issuanceSuccessNextButton,
-      onAction: viewModel.onIssue()
-    )
-  }
+    
+    private var document: some View {
+        VStack(spacing: SPACING_MEDIUM) {
+            
+            HStack {
+                
+                if let documentImage = viewModel.viewState.documentSymbol {
+                    documentImage.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(ColorHelper.textColor)
+                        .frame(maxWidth: 58, maxHeight: 58)
+                        
+                }
+                
+                if let documentTypeName = viewModel.viewState.documentTypeName {
+                    Text(documentTypeName)
+                        .typography(Theme.shared.font.headlineSmall)
+                        .foregroundColor(ColorHelper.textColor)
+                }
+                
+                Spacer()
+            }
+            
+            HStack {
+                if let infoString = viewModel.viewState.mainDisplayValue {
+                    Text(infoString)
+                        .typography(Theme.shared.font.titleMedium)
+                        .foregroundColor(ColorHelper.textColor)
+                }
+                
+                Spacer()
+            }
+        }
+        .padding(SPACING_MEDIUM_LARGE)
+        .frame(maxWidth: .infinity)
+        .background(ColorHelper.background)
+        .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
+    }
+    
+    @ViewBuilder
+    private var footer: some View {
+        WrapButtonView(
+            style: .primary,
+            title: .issuanceSuccessNextButton,
+            onAction: viewModel.onIssue()
+        )
+    }
 }

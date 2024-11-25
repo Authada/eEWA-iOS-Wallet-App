@@ -51,10 +51,11 @@ extension DocumentOfferView {
 
           HStack(spacing: SPACING_SMALL) {
 
-            Theme.shared.image.id
+              cellModel.documentType.icon
               .resizable()
               .scaledToFit()
               .frame(width: 45)
+              .foregroundStyle(Theme.shared.color.black)
 
             Text(
               cellModel.documentType.isSupported
@@ -63,8 +64,10 @@ extension DocumentOfferView {
             )
             .typography(Theme.shared.font.titleMedium)
             .foregroundStyle(Theme.shared.color.black)
+              Spacer()
 
           }
+          .frame(maxWidth: .infinity, maxHeight: 50)
           .padding([.horizontal, .vertical], SPACING_SMALL)
           .background(Theme.shared.color.secondary)
           .roundedCorner(Theme.shared.shape.small, corners: .allCorners)
